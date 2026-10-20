@@ -10,36 +10,41 @@
 <style>
   :root{
     color-scheme: light;
-    --bg: #F6F1E7; --surface: #FFFFFF; --surface-alt: #EDE5D3; --border: #DDD0B3;
-    --text: #241F17; --text-muted: #6E6555; --primary: #0F5C52; --primary-strong: #0A423B; --focus-ring: #0F5C52;
+    --bg: #F7F9FC; --surface: #FFFFFF; --surface-alt: #EAF0FA; --border: #D9E1EE;
+    --text: #111827; --text-muted: #566176; --primary: #0B57D0; --primary-strong: #0842A0; --focus-ring: #0B57D0;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       color-scheme: dark;
-      --bg: #16191A; --surface: #1F2320; --surface-alt: #262B27; --border: #383D38;
-      --text: #ECE7DC; --text-muted: #A7A296; --primary: #5FC7B8; --primary-strong: #86D8CB; --focus-ring: #5FC7B8;
+      --bg: #0E1320; --surface: #151B2B; --surface-alt: #1D2740; --border: #2A3652;
+      --text: #E8EDF7; --text-muted: #A4AFC6; --primary: #7BA7FF; --primary-strong: #AFC9FF; --focus-ring: #7BA7FF;
     }
   }
   :root[data-theme="dark"]{
     color-scheme: dark;
-    --bg: #16191A; --surface: #1F2320; --surface-alt: #262B27; --border: #383D38;
-    --text: #ECE7DC; --text-muted: #A7A296; --primary: #5FC7B8; --primary-strong: #86D8CB; --focus-ring: #5FC7B8;
+    --bg: #0E1320; --surface: #151B2B; --surface-alt: #1D2740; --border: #2A3652;
+    --text: #E8EDF7; --text-muted: #A4AFC6; --primary: #7BA7FF; --primary-strong: #AFC9FF; --focus-ring: #7BA7FF;
   }
   *{ box-sizing: border-box; }
   body{
     margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Roboto, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   }
+  .topbar{ background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: 0 1px 3px rgba(16,24,40,0.08); }
+  .topbar-in{ max-width: 1120px; margin: 0 auto; padding: 8px 24px; min-height: 64px; display:flex; align-items:center; }
+  .logo{ font-size: 1.45rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; font-weight: 500; line-height: 1; padding: 8px 0; }
+  .logo b{ color: var(--primary); font-weight: 800; }
+  @media (max-width: 560px){ .topbar-in{ padding: 6px 16px; } }
   main{ max-width: 720px; margin: 0 auto; padding: 28px 20px 64px; }
   @media (max-width: 560px){ main{ padding: 18px 16px 48px; } }
   a{ color: var(--primary-strong); text-underline-offset: 3px; }
   a:focus-visible{ outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
   .back{ display:inline-block; margin-bottom: 18px; font-size: 0.92rem; min-height: 44px; line-height: 44px; }
-  h1{ font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 1.8rem; line-height: 1.2; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+  h1{ font-weight: 700; font-size: 1.8rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; text-wrap: balance; }
   .updated{ color: var(--text-muted); font-size: 0.85rem; margin: 0 0 24px; }
   .card{ background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 24px 10px; }
   @media (max-width: 560px){ .card{ padding: 18px 16px 6px; } }
-  h2{ font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 1.15rem; margin: 22px 0 8px; text-wrap: balance; }
+  h2{ font-weight: 700; font-size: 1.15rem; margin: 22px 0 8px; text-wrap: balance; }
   h2:first-child{ margin-top: 0; }
   p, li{ font-size: 0.98rem; }
   p{ margin: 0 0 12px; }
@@ -55,6 +60,7 @@
 </style>
 </head>
 <body>
+<header class="topbar"><div class="topbar-in"><a class="logo" href="index.html" aria-label="GastroQuiz, inicio">Gastro<b>Quiz</b></a></div></header>
 <main>
   <a class="back" href="index.html">← Volver al cuestionario</a>
   <h1>Política de privacidad</h1>
