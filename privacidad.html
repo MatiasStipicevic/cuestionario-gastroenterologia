@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidad · Cuestionario Gastroenterología</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #F6F1E7; --surface: #FFFFFF; --surface-alt: #EDE5D3; --border: #DDD0B3;
+    --text: #241F17; --text-muted: #6E6555; --primary: #0F5C52; --primary-strong: #0A423B; --focus-ring: #0F5C52;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #16191A; --surface: #1F2320; --surface-alt: #262B27; --border: #383D38;
+      --text: #ECE7DC; --text-muted: #A7A296; --primary: #5FC7B8; --primary-strong: #86D8CB; --focus-ring: #5FC7B8;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #16191A; --surface: #1F2320; --surface-alt: #262B27; --border: #383D38;
+    --text: #ECE7DC; --text-muted: #A7A296; --primary: #5FC7B8; --primary-strong: #86D8CB; --focus-ring: #5FC7B8;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main{ max-width: 720px; margin: 0 auto; padding: 28px 20px 64px; }
+  @media (max-width: 560px){ main{ padding: 18px 16px 48px; } }
+  a{ color: var(--primary-strong); text-underline-offset: 3px; }
+  a:focus-visible{ outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+  .back{ display:inline-block; margin-bottom: 18px; font-size: 0.92rem; min-height: 44px; line-height: 44px; }
+  h1{ font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 1.8rem; line-height: 1.2; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+  .updated{ color: var(--text-muted); font-size: 0.85rem; margin: 0 0 24px; }
+  .card{ background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 24px 10px; }
+  @media (max-width: 560px){ .card{ padding: 18px 16px 6px; } }
+  h2{ font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 1.15rem; margin: 22px 0 8px; text-wrap: balance; }
+  h2:first-child{ margin-top: 0; }
+  p, li{ font-size: 0.98rem; }
+  p{ margin: 0 0 12px; }
+  ul{ margin: 0 0 14px; padding-left: 20px; }
+  li{ margin: 5px 0; }
+  .summary{ background: var(--surface-alt); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin: 0 0 20px; font-size: 0.95rem; }
+  .summary strong{ display:block; margin-bottom: 4px; }
+  table{ width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0 0 14px; }
+  th, td{ text-align: left; vertical-align: top; padding: 8px 8px; border-bottom: 1px solid var(--border); }
+  th{ color: var(--text-muted); font-weight: 600; font-size: 0.8rem; }
+  .scroll{ overflow-x: auto; }
+  code{ font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace; font-size: 0.85em; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Volver al cuestionario</a>
+  <h1>Política de privacidad</h1>
+  <p class="updated">Última actualización: 20 de octubre de 2026</p>
+
+  <div class="summary"><strong>En resumen</strong>
+    Este sitio no tiene servidor propio, no usa cookies ni analítica y no carga recursos de terceros. Tu usuario y tu contraseña se comprueban dentro de tu navegador y nunca se envían a ninguna parte. Tu avance en el cuestionario queda guardado solo en tu dispositivo.</div>
+
+  <div class="card">
+    <h2>1. Quién administra el sitio</h2>
+    <p>El sitio lo administra Matías Stipicevic, titular del repositorio <a href="https://github.com/MatiasStipicevic/cuestionario-gastroenterologia">github.com/MatiasStipicevic/cuestionario-gastroenterologia</a>. Para consultas o solicitudes sobre esta política, abre un <em>issue</em> en ese repositorio o escribe a quien te entregó el acceso.</p>
+
+    <h2>2. Para qué sirve</h2>
+    <p>Es un banco de preguntas de práctica de gastroenterología, de acceso restringido y con fines de estudio personal. Solo pueden entrar las personas a quienes el administrador les entregó un usuario y una contraseña.</p>
+
+    <h2>3. Qué datos se tratan y dónde quedan</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Dato</th><th>Para qué</th><th>Dónde queda</th></tr></thead>
+      <tbody>
+        <tr><td>Usuario y contraseña</td><td>Descifrar el contenido del cuestionario</td><td>Solo en la memoria de tu navegador mientras ingresas. No se envían ni se guardan en ningún servidor.</td></tr>
+        <tr><td>Sesión abierta</td><td>No pedirte la contraseña en cada recarga</td><td><code>sessionStorage</code> de la pestaña, hasta 8 horas o hasta que cierres la pestaña o presiones “Cerrar sesión”.</td></tr>
+        <tr><td>Avance del cuestionario (preguntas respondidas, posición, PDF elegido)</td><td>Que puedas continuar donde quedaste</td><td><code>localStorage</code> de tu navegador, asociado a un identificador derivado de tu usuario. No se envía a nadie.</td></tr>
+      </tbody>
+    </table></div>
+    <p>El administrador no recibe ni puede ver tus respuestas, tus resultados ni cuántas veces ingresas.</p>
+
+    <h2>4. Lo que el sitio no hace</h2>
+    <ul>
+      <li>No usa cookies.</li>
+      <li>No usa herramientas de analítica, publicidad ni seguimiento.</li>
+      <li>No carga fuentes, scripts ni imágenes desde otros sitios. Una regla de seguridad del propio sitio impide que la página se conecte a servidores externos.</li>
+      <li>No vende ni cede datos, porque no los recibe.</li>
+    </ul>
+
+    <h2>5. Alojamiento</h2>
+    <p>El sitio se sirve mediante GitHub Pages. Al descargar los archivos, GitHub puede registrar datos técnicos de la conexión, como la dirección IP y el navegador, según su <a href="https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement">declaración de privacidad</a>. Esos registros son de GitHub y el administrador de este sitio no accede a ellos.</p>
+
+    <h2>6. Seguridad del contenido</h2>
+    <p>Las preguntas no están publicadas en claro: viajan cifradas (AES-256-GCM) y solo se descifran en tu navegador con una clave que se obtiene a partir de tu contraseña (PBKDF2-SHA-256, 600.000 iteraciones). Por eso:</p>
+    <ul>
+      <li>Quien no tenga credenciales válidas no puede leer las preguntas, aunque descargue los archivos del sitio.</li>
+      <li>La protección depende de que tu contraseña sea larga y no se comparta. No la reutilices en otros servicios.</li>
+      <li>No hay recuperación automática de contraseña: si la pierdes, el administrador debe emitir una nueva.</li>
+      <li>Si una persona deja de tener acceso, el administrador cambia la clave de cifrado y emite nuevas contraseñas al resto. Una copia que esa persona ya haya descargado no se puede recuperar.</li>
+    </ul>
+
+    <h2>7. Origen del contenido y derechos de autor</h2>
+    <p>Las preguntas provienen de pruebas, apuntes y transcripciones de cursos de gastroenterología, algunas elaboradas por estudiantes. Los derechos pertenecen a sus autores y a las instituciones correspondientes. Se usan solo para estudio personal y no se autoriza su redistribución. Si eres titular de algún contenido y quieres que se retire, escríbelo en un <em>issue</em> del repositorio y se eliminará.</p>
+    <p>Algunas respuestas fueron completadas con alternativas redactadas para este módulo y se señalan en cada pregunta. Verifica siempre con el material oficial de tu curso: este sitio no reemplaza la bibliografía ni el criterio clínico.</p>
+
+    <h2>8. Tus derechos</h2>
+    <p>Puedes pedir en cualquier momento que se elimine tu usuario o que se cambie tu contraseña. Como el sitio no guarda datos personales en un servidor, la forma más directa de borrar tu información es limpiar los datos del sitio en tu navegador (almacenamiento local y de sesión) o presionar “Cerrar sesión” en un dispositivo compartido.</p>
+
+    <h2>9. Cambios</h2>
+    <p>Si esta política cambia, se actualizará esta página y la fecha de arriba.</p>
+  </div>
+</main>
+</body>
+</html>
