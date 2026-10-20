@@ -108,17 +108,23 @@
   .intro-note li{ margin: 3px 0; }
   .section-label{ font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 10px; display:flex; justify-content: space-between; align-items:center; gap: 10px; flex-wrap: wrap; }
 
-  .pdf-select{
-    width: 100%; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--text); background-color: var(--surface-alt);
-    border: 1.5px solid transparent; border-radius: 8px; padding: 13px 44px 13px 16px; min-height: 48px; cursor: pointer;
-    -webkit-appearance: none; appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23566176' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat: no-repeat; background-position: right 16px center;
-  }
-  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pdf-select{ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23A4AFC6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"); } }
-  :root[data-theme="dark"] .pdf-select{ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23A4AFC6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
-  .pdf-select:hover{ border-color: var(--primary); }
-  .pdf-select:focus-visible{ outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .ms{ position: relative; }
+  .ms-btn{ width: 100%; display:flex; align-items:center; justify-content: space-between; gap: 12px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--text); background: var(--surface-alt); border: 2px solid transparent; border-radius: 8px; padding: 12px 16px; min-height: 48px; cursor: pointer; text-align: left; }
+  .ms-btn:hover, .ms-btn[aria-expanded="true"]{ border-color: var(--primary); }
+  .ms-btn:focus-visible{ outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .ms-btn .chev{ flex: none; color: var(--text-muted); transition: transform .15s ease; }
+  .ms-btn[aria-expanded="true"] .chev{ transform: rotate(180deg); }
+  .ms-panel{ position: absolute; z-index: 15; left: 0; right: 0; top: calc(100% + 6px); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; max-height: min(440px, 62vh); overflow-y: auto; }
+  .ms-row{ display:flex; align-items:center; gap: 6px; border-radius: 8px; }
+  .ms-row:hover{ background: var(--surface-alt); }
+  .ms-row label{ flex: 1; min-width: 0; display:flex; align-items:center; gap: 12px; min-height: 48px; padding: 6px 10px; cursor: pointer; font-size: 0.92rem; }
+  .ms-row input[type="checkbox"]{ width: 20px; height: 20px; flex: none; margin: 0; accent-color: var(--primary); }
+  .ms-name{ flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .ms-count{ font-size: 0.8rem; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ms-all{ border-bottom: 1px solid var(--border); border-radius: 8px 8px 0 0; margin-bottom: 4px; font-weight: 700; }
+  .ms-only{ flex: none; padding: 10px 12px; font-size: 0.82rem; }
+  .ms-foot{ display:flex; justify-content: flex-end; padding: 8px 4px 2px; }
+  .ms-foot .btn{ min-height: 44px; padding: 8px 22px; }
   .pdf-info{ font-size: 0.84rem; color: var(--text-muted); margin: 10px 0 20px; padding: 10px 14px; background: var(--surface-alt); border-radius: 8px; }
   .pdf-info ul{ margin: 4px 0 0; padding-left: 18px; }
   .pdf-info li{ margin: 2px 0; }
@@ -486,8 +492,14 @@
         <span class="rb-actions"><button id="btn-resume">Continuar</button><button id="btn-discard">Descartar</button></span>
       </div>
 
-      <label class="section-label" for="pdf-select"><span>¿Qué preguntas quieres hacer?</span></label>
-      <select class="pdf-select" id="pdf-select" aria-describedby="pdf-info"></select>
+      <label class="section-label" for="pdf-ms-btn"><span>¿Qué preguntas quieres hacer?</span></label>
+      <div class="ms" id="pdf-ms">
+        <button type="button" class="ms-btn" id="pdf-ms-btn" aria-haspopup="true" aria-expanded="false" aria-controls="pdf-ms-panel" aria-describedby="pdf-info">
+          <span id="pdf-ms-label"></span>
+          <svg class="chev" width="14" height="9" viewBox="0 0 14 9" aria-hidden="true"><path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="ms-panel hidden" id="pdf-ms-panel" role="group" aria-label="PDFs disponibles"></div>
+      </div>
       <div class="pdf-info" id="pdf-info"></div>
 
       <div class="toggles">
@@ -586,38 +598,96 @@ function startApp(DATA, META, UID){
     '</ul>';
 
   var LS_PDF = 'gastro-quiz-last-pdf-' + UID;
-  var pdfSelect = $('pdf-select');
   function inPdf(q, f){ return q.file === f || (q.also || []).some(function(a){ return a.file === f; }); }
-  var optAll = document.createElement('option');
-  optAll.value = 'all'; optAll.textContent = 'Todos los PDFs (' + DATA.length + ' preguntas)';
-  pdfSelect.appendChild(optAll);
+  var files = META.pdfs.map(function(p){ return p.file; });
   META.pdfs.forEach(function(p){
     var inF = DATA.filter(function(q){ return inPdf(q, p.file); });
     p.count = inF.length; p.gen = inF.filter(function(q){ return q.gen; }).length;
-    var o = document.createElement('option');
-    o.value = p.file; o.textContent = p.file + '  (' + p.count + ' preguntas)';
-    pdfSelect.appendChild(o);
   });
+  var selected = files.slice();      // por defecto: todos los PDFs
   try{
-    var lastPdf = localStorage.getItem(LS_PDF);
-    if(lastPdf && META.pdfs.some(function(p){ return p.file === lastPdf; })) pdfSelect.value = lastPdf;
+    var raw = localStorage.getItem(LS_PDF), v = null;
+    try{ v = JSON.parse(raw); }catch(e){ v = raw; }
+    if(Array.isArray(v)){ var okf = files.filter(function(f){ return v.indexOf(f) !== -1; }); if(okf.length) selected = okf; }
+    else if(typeof v === 'string' && files.indexOf(v) !== -1) selected = [v];
   }catch(e){}
+  function isAll(){ return selected.length === files.length; }
+  function selFilter(){ return isAll() ? [] : selected.slice(); }   // [] = sin restricción (todos)
+  function poolBase(){ return DATA.filter(function(q){ return selected.some(function(f){ return inPdf(q, f); }); }); }
+  function normPdfs(st){ if(!st.pdfs){ st.pdfs = (st.pdf && st.pdf !== 'all') ? [st.pdf] : []; } return st.pdfs; }
+  function pdfsText(st){ var p = normPdfs(st); return p.length === 0 ? '' : p.length === 1 ? ' (' + p[0] + ')' : ' (' + p.length + ' PDFs)'; }
+  function quizTitle(st){ var p = normPdfs(st); return p.length === 0 ? 'Cuestionario de Gastroenterología' : p.length === 1 ? p[0] : 'Cuestionario: ' + p.length + ' PDFs'; }
+
+  /* menú desplegable con casillas */
+  var msBtn = $('pdf-ms-btn'), msPanel = $('pdf-ms-panel'), msBox = $('pdf-ms');
+  msPanel.innerHTML =
+    '<div class="ms-row ms-all"><label><input type="checkbox" id="ms-all"><span class="ms-name">Todos los PDFs</span><span class="ms-count">' + DATA.length + '</span></label></div>' +
+    META.pdfs.map(function(p, i){
+      return '<div class="ms-row"><label><input type="checkbox" data-i="' + i + '"><span class="ms-name">' + esc(p.file) + '</span><span class="ms-count">' + p.count + '</span></label>' +
+             '<button type="button" class="btn-text ms-only" data-only="' + i + '" aria-label="Solo ' + esc(p.file) + '">Solo</button></div>';
+    }).join('') +
+    '<div class="ms-foot"><button type="button" class="btn btn-primary" id="ms-done">Listo</button></div>';
+  function msLabel(){
+    if(!selected.length) return 'Elige al menos un PDF';
+    if(isAll()) return 'Todos los PDFs (' + DATA.length + ' preguntas)';
+    if(selected.length === 1) return selected[0] + ' (' + META.pdfs[files.indexOf(selected[0])].count + ' preguntas)';
+    return selected.length + ' PDFs seleccionados (' + poolBase().length + ' preguntas)';
+  }
+  function syncMs(){
+    var all = $('ms-all'); all.checked = isAll(); all.indeterminate = selected.length > 0 && !isAll();
+    Array.prototype.forEach.call(msPanel.querySelectorAll('input[data-i]'), function(c){ c.checked = selected.indexOf(files[+c.getAttribute('data-i')]) !== -1; });
+    $('pdf-ms-label').textContent = msLabel();
+  }
+  function setSelected(list){
+    selected = files.filter(function(f){ return list.indexOf(f) !== -1; });
+    try{ localStorage.setItem(LS_PDF, JSON.stringify(selected)); }catch(e){}
+    syncMs(); refreshStart();
+  }
+  function openMs(on){
+    msPanel.classList.toggle('hidden', !on);
+    msBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+  msBtn.addEventListener('click', function(){ openMs(msPanel.classList.contains('hidden')); });
+  msPanel.addEventListener('change', function(ev){
+    var c = ev.target;
+    if(c.id === 'ms-all'){ setSelected(c.checked ? files.slice() : []); return; }
+    var i = c.getAttribute('data-i'); if(i === null) return;
+    var f = files[+i], cur = selected.slice(), k = cur.indexOf(f);
+    if(c.checked && k === -1) cur.push(f); else if(!c.checked && k !== -1) cur.splice(k, 1);
+    setSelected(cur);
+  });
+  msPanel.addEventListener('click', function(ev){
+    var o = ev.target.closest('[data-only]');
+    if(o){ setSelected([files[+o.getAttribute('data-only')]]); return; }
+    if(ev.target.id === 'ms-done'){ openMs(false); msBtn.focus(); }
+  });
+  document.addEventListener('click', function(ev){ if(!msBox.contains(ev.target)) openMs(false); });
+  msBox.addEventListener('keydown', function(ev){ if(ev.key === 'Escape' && !msPanel.classList.contains('hidden')){ openMs(false); msBtn.focus(); ev.stopPropagation(); } });
+  msBox.addEventListener('focusout', function(){ setTimeout(function(){ if(!msBox.contains(document.activeElement)) openMs(false); }, 0); });
 
   function renderPdfInfo(){
-    var f = pdfSelect.value, box = $('pdf-info');
-    if(f === 'all'){
-      box.innerHTML = 'Se mezclan las preguntas de los ' + META.pdfs.length + ' PDFs. Elige uno en el menú para ver solo sus preguntas.';
+    var box = $('pdf-info');
+    if(!selected.length){ box.innerHTML = 'Abre el menú y marca uno o más PDFs.'; return; }
+    if(isAll()){
+      box.innerHTML = 'Se mezclan las preguntas de los ' + files.length + ' PDFs. Abre el menú para elegir solo uno o varios.';
       return;
     }
-    var p = META.pdfs.filter(function(x){ return x.file === f; })[0];
-    var h = '<strong>' + esc(p.file) + '</strong> contiene:<ul>' + p.contains.map(function(c){ return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
-    if(p.gen) h += '<span class="gen-count">' + p.gen + ' de sus ' + p.count + ' preguntas tienen alternativas elaboradas para este módulo.</span>';
-    box.innerHTML = h;
+    if(selected.length === 1){
+      var p = META.pdfs[files.indexOf(selected[0])];
+      var h = '<strong>' + esc(p.file) + '</strong> contiene:<ul>' + p.contains.map(function(c){ return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>';
+      if(p.gen) h += '<span class="gen-count">' + p.gen + ' de sus ' + p.count + ' preguntas tienen alternativas elaboradas para este módulo.</span>';
+      box.innerHTML = h; return;
+    }
+    var genN = poolBase().filter(function(q){ return q.gen; }).length;
+    box.innerHTML = '<strong>' + selected.length + ' PDFs seleccionados:</strong><ul>' + selected.map(function(f){
+      var p = META.pdfs[files.indexOf(f)]; return '<li>' + esc(f) + ' (' + p.count + ')</li>'; }).join('') + '</ul>' +
+      (genN ? '<span class="gen-count">' + genN + ' preguntas de esta selección tienen alternativas elaboradas para este módulo.</span>' : '') +
+      '<span class="gen-count">Si una pregunta está en varios PDFs elegidos, aparece una sola vez.</span>';
   }
 
   function currentPool(){
-    var useGen = $('gen-toggle').checked, omitTwin = $('twin-toggle').checked, f = pdfSelect.value;
-    var pool = DATA.filter(function(q){ return (f === 'all' || inPdf(q, f)) && (useGen || !q.gen); });
+    var useGen = $('gen-toggle').checked, omitTwin = $('twin-toggle').checked;
+    var pool = poolBase().filter(function(q){ return useGen || !q.gen; });
     if(omitTwin){
       var ids = {}; pool.forEach(function(q){ ids[q.id] = true; });
       pool = pool.filter(function(q){ return !(q.twinOf && ids[q.twinOf]); });
@@ -627,12 +697,12 @@ function startApp(DATA, META, UID){
   function refreshStart(){
     var n = currentPool().length;
     $('start-count').textContent = n ? (n + ' preguntas en la selección')
-      : 'No hay preguntas con estas opciones: activa “Incluir preguntas con alternativas elaboradas”.';
+      : (selected.length ? 'No hay preguntas con estas opciones: activa “Incluir preguntas con alternativas elaboradas”.' : 'Elige al menos un PDF para comenzar.');
     $('btn-start').disabled = n === 0;
     renderPdfInfo();
   }
-  pdfSelect.addEventListener('change', function(){ try{ localStorage.setItem(LS_PDF, pdfSelect.value); }catch(e){} refreshStart(); });
   ['gen-toggle','twin-toggle'].forEach(function(id){ $(id).addEventListener('change', refreshStart); });
+  syncMs();
   refreshStart();
 
   /* ---------- Estado / persistencia ---------- */
@@ -644,17 +714,17 @@ function startApp(DATA, META, UID){
   try{ saved = JSON.parse(localStorage.getItem(LS_KEY)); }catch(e){ saved = null; }
   if(saved && saved.order && saved.order.length && saved.order.every(function(id){ return byId[id]; })){
     var done = Object.keys(saved.answers || {}).length;
-    $('resume-text').textContent = 'Tienes una sesión guardada' + (saved.pdf && saved.pdf !== 'all' ? ' (' + saved.pdf + ')' : '') + ': ' + done + ' de ' + saved.order.length + ' preguntas respondidas.';
+    $('resume-text').textContent = 'Tienes una sesión guardada' + pdfsText(saved) + ': ' + done + ' de ' + saved.order.length + ' preguntas respondidas.';
     $('resume-banner').classList.remove('hidden');
   } else { saved = null; }
-  $('btn-resume').addEventListener('click', function(){ state = saved; startQuizScreen(); });
+  $('btn-resume').addEventListener('click', function(){ state = saved; normPdfs(state); startQuizScreen(); });
   $('btn-discard').addEventListener('click', function(){ clearPersist(); saved = null; $('resume-banner').classList.add('hidden'); });
 
   $('btn-start').addEventListener('click', function(){
     var pool = currentPool();
     if(!pool.length) return;
     var ordered = $('shuffle-toggle').checked ? shuffle(pool) : pool.slice();
-    state = { order: ordered.map(function(q){ return q.id; }), answers: {}, idx: 0, pdf: pdfSelect.value };
+    state = { order: ordered.map(function(q){ return q.id; }), answers: {}, idx: 0, pdfs: selFilter() };
     persist();
     startQuizScreen();
   });
@@ -667,7 +737,7 @@ function startApp(DATA, META, UID){
   }
   function startQuizScreen(){
     show('quiz');
-    $('quiz-title').textContent = (state.pdf && state.pdf !== 'all') ? state.pdf : 'Cuestionario de Gastroenterología';
+    $('quiz-title').textContent = quizTitle(state);
     renderQuestion();
   }
 
@@ -704,8 +774,9 @@ function startApp(DATA, META, UID){
     if(q.also && q.also.length){
       h += '<span class="src-also">También aparece en: ' + q.also.map(function(a){ return '<code>' + esc(a.file) + '</code> (p. ' + esc(String(a.page)) + ')'; }).join(', ') + '</span>';
     }
-    if(state && state.pdf && state.pdf !== 'all' && state.pdf !== q.file){
-      var hit = (q.also || []).filter(function(a){ return a.file === state.pdf; })[0];
+    var selF = (state && state.pdfs) || [];
+    if(selF.length && selF.indexOf(q.file) === -1){
+      var hit = (q.also || []).filter(function(a){ return selF.indexOf(a.file) !== -1; })[0];
       if(hit) h += '<span class="src-also">En el PDF elegido: <code>' + esc(hit.file) + '</code> (p. ' + esc(String(hit.page)) + ')</span>';
     }
     $('src-badge').innerHTML = h;
@@ -924,13 +995,13 @@ function startApp(DATA, META, UID){
   $('btn-retry').addEventListener('click', function(){
     var ids = state.order.slice();
     var ordered = $('shuffle-toggle').checked ? shuffle(ids) : ids;
-    state = { order: ordered, answers: {}, idx: 0, pdf: state.pdf };
+    state = { order: ordered, answers: {}, idx: 0, pdfs: state.pdfs };
     persist(); startQuizScreen();
   });
   $('btn-retry-wrong').addEventListener('click', function(){
     var ids = (state._wrongIds || []).slice();
     if(!ids.length) return;
-    state = { order: $('shuffle-toggle').checked ? shuffle(ids) : ids, answers: {}, idx: 0, pdf: state.pdf };
+    state = { order: $('shuffle-toggle').checked ? shuffle(ids) : ids, answers: {}, idx: 0, pdfs: state.pdfs };
     persist(); startQuizScreen();
   });
 }
