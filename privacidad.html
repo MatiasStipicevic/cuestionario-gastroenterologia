@@ -61,7 +61,7 @@
   <p class="updated">Última actualización: 20 de octubre de 2026</p>
 
   <div class="summary"><strong>En resumen</strong>
-    Este sitio no tiene servidor propio, no usa cookies ni analítica y no carga recursos de terceros. Tu usuario y tu contraseña se comprueban dentro de tu navegador y nunca se envían a ninguna parte. Tu avance en el cuestionario queda guardado solo en tu dispositivo.</div>
+    Este sitio no tiene servidor propio, no usa cookies ni analítica y no carga recursos de terceros. Tu usuario y tu contraseña se comprueban dentro de tu navegador y nunca se envían a ninguna parte. Tu avance en el cuestionario queda guardado solo en tu dispositivo. Solo la cuenta de administrador puede invitar personas y gestionar accesos.</div>
 
   <div class="card">
     <h2>1. Quién administra el sitio</h2>
@@ -77,15 +77,20 @@
         <tr><td>Usuario y contraseña</td><td>Descifrar el contenido del cuestionario</td><td>Solo en la memoria de tu navegador mientras ingresas. No se envían ni se guardan en ningún servidor.</td></tr>
         <tr><td>Sesión abierta</td><td>No pedirte la contraseña en cada recarga</td><td><code>sessionStorage</code> de la pestaña, hasta 8 horas o hasta que cierres la pestaña o presiones “Cerrar sesión”.</td></tr>
         <tr><td>Avance del cuestionario (preguntas respondidas, posición, PDF elegido)</td><td>Que puedas continuar donde quedaste</td><td><code>localStorage</code> de tu navegador, asociado a un identificador derivado de tu usuario. No se envía a nadie.</td></tr>
+        <tr><td>Nombre de usuario y código de solicitud</td><td>Crear tu cuenta cuando te invitan</td><td>El código contiene el usuario que elegiste y tu clave de acceso ya cifrada con tu contraseña, nunca la contraseña. Tú se lo entregas al administrador, que lo aprueba. El nombre de usuario queda en una lista cifrada que solo ve el administrador dentro del panel.</td></tr>
+        <tr><td>Token de GitHub (solo cuenta de administrador)</td><td>Publicar usuarios nuevos desde el panel</td><td>En el navegador del administrador, cifrado con su contraseña. Los usuarios comunes no lo tienen ni pueden obtenerlo.</td></tr>
       </tbody>
     </table></div>
-    <p>El administrador no recibe ni puede ver tus respuestas, tus resultados ni cuántas veces ingresas.</p>
+    <p>El administrador no recibe ni puede ver tus respuestas, tus resultados ni cuántas veces ingresas. Sí puede ver los nombres de usuario que tienen acceso.</p>
+
+    <h2>Tipos de cuenta</h2>
+    <p>Hay dos tipos de cuenta. La cuenta de <strong>administrador</strong> puede invitar personas, aprobar solicitudes y quitar accesos desde el panel de administración. La cuenta de <strong>usuario común</strong> solo puede usar el cuestionario: no puede ver ni editar otras cuentas ni modificar el sitio.</p>
 
     <h2>4. Lo que el sitio no hace</h2>
     <ul>
       <li>No usa cookies.</li>
       <li>No usa herramientas de analítica, publicidad ni seguimiento.</li>
-      <li>No carga fuentes, scripts ni imágenes desde otros sitios. Una regla de seguridad del propio sitio impide que la página se conecte a servidores externos.</li>
+      <li>No carga fuentes, scripts ni imágenes desde otros sitios. Una regla de seguridad del propio sitio impide que la página se conecte a servidores externos, salvo la API de GitHub, que solo usa el panel de administración para publicar usuarios nuevos. Los usuarios comunes no hacen esa conexión.</li>
       <li>No vende ni cede datos, porque no los recibe.</li>
     </ul>
 
